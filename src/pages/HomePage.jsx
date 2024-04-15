@@ -53,7 +53,8 @@ const HomePage = () => {
       <Box ref={galleryRef}>
         <GallerySection />
       </Box>
-   
+
+     
     </>
   );
 };

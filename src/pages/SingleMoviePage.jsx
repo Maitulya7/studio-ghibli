@@ -3,11 +3,12 @@ import { useApi } from '../ApiContext';
 import { useParams } from 'react-router-dom';
 import { Box, Typography, Card, CardMedia, CardContent, Chip, IconButton, Grid, Divider, CircularProgress } from '@mui/material';
 import { ArrowBack, Star } from '@mui/icons-material';
+import rottenTomatoesLogo from '../assets/rotten_tomato.png';
 
 const SingleMoviePage = () => {
   const api = useApi();
   const [movie, setMovie] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
   const { id } = useParams();
 
   useEffect(() => {
@@ -16,8 +17,8 @@ const SingleMoviePage = () => {
         setMovie(res.data)
         setLoading(false)
       }
-    )
-      .catch((err) =>{ 
+      )
+      .catch((err) => {
         console.log(err);
         setLoading(false);
       });
@@ -63,51 +64,51 @@ const SingleMoviePage = () => {
               />
             </Grid>
             <Grid item xs={12} md={8}>
-  <Typography variant="body1" sx={{ mb: 3 }}>
-    {movie.description}
-  </Typography>
-  <Grid container spacing={2}>
-    <Grid item xs={12} sm={6}>
-      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-        Original Title:
-      </Typography>
-      <Typography variant="body2">{movie.original_title}</Typography>
-    </Grid>
-    <Grid item xs={12} sm={6}>
-      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-        Producer:
-      </Typography>
-      <Typography variant="body2">{movie.producer}</Typography>
-    </Grid>
-    <Grid item xs={12} sm={6}>
-      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-        Release Date:
-      </Typography>
-      <Typography variant="body2">{movie.release_date}</Typography>
-    </Grid>
-    <Grid item xs={12} sm={6}>
-      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-        Running Time:
-      </Typography>
-      <Typography variant="body2">{movie.running_time} minutes</Typography>
-    </Grid>
-    <Grid item xs={12}>
-      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-        Original Title (Romanised):
-      </Typography>
-      <Typography variant="body2">{movie.original_title_romanised}</Typography>
-    </Grid>
-    <Grid item xs={12}>
-      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-        RT Score:
-      </Typography>
-      <Typography variant="body2" sx={{ display: 'inline-flex', alignItems: 'center' }}>
-        {movie.rt_score}%
-        <Chip icon={<Star />} label="Top Rated" color="secondary" size="small" sx={{ ml: 1 }} />
-      </Typography>
-    </Grid>
-  </Grid>
-</Grid>
+              <Typography variant="body1" sx={{ mb: 3 }}>
+                {movie.description}
+              </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                    Original Title:
+                  </Typography>
+                  <Typography variant="body2">{movie.original_title}</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                    Producer:
+                  </Typography>
+                  <Typography variant="body2">{movie.producer}</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                    Release Date:
+                  </Typography>
+                  <Typography variant="body2">{movie.release_date}</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                    Running Time:
+                  </Typography>
+                  <Typography variant="body2">{movie.running_time} minutes</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                    Original Title (Romanised):
+                  </Typography>
+                  <Typography variant="body2">{movie.original_title_romanised}</Typography>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                    RT Score:
+                  </Typography>
+                  <Box sx={{display:"flex" , gap:"5px" , alignItems:"center"}}>
+                  <Typography>{movie.rt_score}%</Typography>
+                  <img src={rottenTomatoesLogo} alt="Rotten Tomatoes" style={{ width: 25, height: 'auto' }} />
+                  </Box>
+                </Grid>
+              </Grid>
+            </Grid>
 
 
           </Grid>

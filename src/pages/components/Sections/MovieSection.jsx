@@ -3,6 +3,7 @@ import { useApi } from '../../../ApiContext';
 import { Box, Card, CardMedia, CardContent, Typography, Button, IconButton } from '@mui/material';
 import { ArrowCircleLeft, ArrowCircleRight } from '@mui/icons-material';
 import rottenTomatoesLogo from '../../../assets/rotten_tomato.png';
+import image1 from "../../../assets/image1.png"
 
 const MovieSection = () => {
   const api = useApi();
@@ -28,7 +29,10 @@ const MovieSection = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '105vh', justifyContent: 'center', paddingX: { xs: 2, sm: 4, md: 6, lg: 8 }, position: 'relative', overflowX: 'hidden' }}>
-      <Typography sx={{ marginBottom: 2, marginLeft: { xs: 2, md: 2 }, fontSize: { xs: "25px", md: "30px", lg: "35px" } }}>Featured Movies</Typography>
+    <Box sx={{display:'flex' , justifyContent:"space-between" , alignItems:"center"}}>
+      <Typography sx={{  marginLeft: { xs: 2, md: 2 }, fontSize: { xs: "25px", md: "30px", lg: "35px" } }}>Featured Movies</Typography>
+      <img src={image1} alt='image1'/>
+    </Box>
       <Box sx={{ p: 2, display: 'flex', overflowX: 'hidden', alignItems: 'center', overflowY: 'hidden', position: 'relative' }}>
         <Box id="movie-section" sx={{ display: 'flex', gap: 2, transform: `translateX(-${scrollPosition}px)`, transition: 'transform 0.5s ease' }}>
           {movies.map((movie) => (
