@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, Button, IconButton, Menu, MenuItem } from 
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ scrollToHero, scrollToMovie , scrollToGallery , scrollToAbout }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -16,23 +16,23 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="absolute" sx={{ top: 0, backgroundColor: 'transparent', boxShadow: 'none' ,paddingX:12 }}>
+    <AppBar position="sticky" sx={{ top: 0, backgroundColor: '#222', boxShadow: 'none', paddingX: 12 }}>
       <Toolbar>
         <Typography variant="h6" component={Link} to="/" sx={{ flexGrow: 1, color: '#fff' }}>
           STUDIO GHIBLI
         </Typography>
         <div className="hidden md:flex space-x-4">
-          <Button component={Link} to="/home" color="inherit" variant="text">
+          <Button onClick={scrollToHero} color="inherit" variant="text">
             Home
           </Button>
-          <Button component={Link} to="/movies" color="inherit" variant="text">
+          <Button onClick={scrollToMovie} color="inherit" variant="text">
             Movies
           </Button>
-          <Button component={Link} to="/about-us" color="inherit" variant="text">
+          <Button onClick={scrollToAbout} color="inherit" variant="text">
             About Us
           </Button>
-          <Button component={Link} to="/gallery" color="inherit" variant="text">
-            Gallery
+          <Button onClick={scrollToGallery} color="inherit" variant="text">
+          Gallery
           </Button>
           <Button component={Link} to="/login" color="primary" variant="contained">
             Login
@@ -67,22 +67,14 @@ const Navbar = () => {
             open={open}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose} component={Link} to="/home">
-              Home
-            </MenuItem>
-            <MenuItem onClick={handleClose} component={Link} to="/movies">
-              Movies
-            </MenuItem>
-            <MenuItem onClick={handleClose} component={Link} to="/about-us">
-              About Us
-            </MenuItem>
-            <MenuItem onClick={handleClose} component={Link} to="/gallery">
-              Gallery
-            </MenuItem>
-            <MenuItem onClick={handleClose} component={Link} to="/login">
+            <MenuItem onClick={handleClose}>Home</MenuItem>
+            <MenuItem onClick={handleClose}>Movies</MenuItem>
+            <MenuItem onClick={handleClose}>About Us</MenuItem>
+            <MenuItem onClick={handleClose}>Gallery</MenuItem>
+            <MenuItem component={Link} to="/login" onClick={handleClose}>
               Login
             </MenuItem>
-            <MenuItem onClick={handleClose} component={Link} to="/register">
+            <MenuItem component={Link} to="/register" onClick={handleClose}>
               Register
             </MenuItem>
           </Menu>
