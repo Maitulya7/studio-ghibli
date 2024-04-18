@@ -28,9 +28,9 @@ const userLogin = asyncHandler(async (req, res) => {
 });
 
 const userRegister = asyncHandler(async (req, res) => {
-    const { username, password, email, banner, icon } = req.body;
+    const { username, password, email } = req.body;
 
-    if (!username || !password || !email || !banner || !icon) {
+    if (!username || !password || !email) {
         res.status(400).json({ error: "All fields are required" });
         return;
     }
@@ -48,8 +48,6 @@ const userRegister = asyncHandler(async (req, res) => {
         username,
         password: hashedPassword,
         email,
-        banner,
-        icon,
     });
 
     res.status(201).json({ user });
