@@ -1,53 +1,61 @@
-const asynHandler = require('express-async-handler')
-const User = require("../models/userModel")
-const bcrypt = require('bcrypt')
+const asyncHandler = require('express-async-handler');
+const User = require("../models/userModel");
+const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
 
-const userLogin = asynHandler(
-    async (req, res) => {
-        const {email , password} = req.body
-        console.log(email , password)
-        if(!email || !password){
-            res.status(400)
-            throw new Error("All fields are required")
-        }
-        const user = await User.findOne({email})
+const userLogin = asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
 
-        if(user && (await bcrypt.compare(password , user.password))){
-            res.status(200).json({email})
-        }else{
-            res.status(401)
-            throw new Error("Username of password is invalid")
-        }
-        res.status(200).json("you are login")
-    })
-
-const userRegister = asynHandler(
-    async (req,res) =>{
-        const {username , password , email} = req.body
-        console.log(username , password , email)
-        if(!username || !password || !email){
-            res.status(400);
-            throw new Error("All filed are requried")
-        }
-        const userAvailable = await  User.findOne({email})
-
-        const hashPassword = await bcrypt.hash(password , 10)
-        
-        if(userAvailable){
-            res.status(400);
-            throw new Error("User alredy register with givin email")
-        }
-        const user = await User.create({
-            username,
-            password:hashPassword,
-            email
-        });
-        console.log(`User create ${user}`)
-        res.status(201).json({user})
+    if (!email || !password) {
+        res.status(400).json({ error: "All fields are required" });
+        return;
     }
-)
+
+    const user = await User.findOne({ email });
+
+    if (user && (await bcrypt.compare(password, user.password))) {
+        const accessToken = jwt.sign({
+            user: {
+                email: user.email,
+                id: user.id,
+            },
+        }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
+
+        res.status(200).json({ email: user.email, accessToken, banner: user.banner, icon: user.icon });
+    } else {
+        res.status(401).json({ error: "Invalid email or password" });
+    }
+});
+
+const userRegister = asyncHandler(async (req, res) => {
+    const { username, password, email, banner, icon } = req.body;
+
+    if (!username || !password || !email || !banner || !icon) {
+        res.status(400).json({ error: "All fields are required" });
+        return;
+    }
+
+    const userAvailable = await User.findOne({ email });
+
+    if (userAvailable) {
+        res.status(400).json({ error: "User already registered with the given email" });
+        return;
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await User.create({
+        username,
+        password: hashedPassword,
+        email,
+        banner,
+        icon,
+    });
+
+    res.status(201).json({ user });
+});
 
 module.exports = {
     userLogin,
-    userRegister
-}
+    userRegister,
+};

@@ -15,6 +15,11 @@ const validationToken = asyncHadler(
 
                 req.user = decoded.user
             })
+        }else{
+            res.status(401);
+            throw new Error("User is not authorized token is missing")
         }
     }
 )
+
+module.exports = validationToken

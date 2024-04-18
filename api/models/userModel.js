@@ -16,6 +16,14 @@ const userSchema = mongoose.Schema({
         type:String,
         require:[true , "user password is require"]
     },
+    banner:{
+        type:String,
+        require:[true , "Banner Image is require"]
+    },
+    icon:{
+        type:String,
+        require:[true , "Icon Image is require"]
+    }
 }) 
 
 
