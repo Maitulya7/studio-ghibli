@@ -21,9 +21,9 @@ const LoginPage = () => {
       formData.append('password', values.password);
 
       try {
-        axios.post('http://localhost:5001/api/auth/login', formData , {
+        axios.post('http://localhost:5002/api/auth/login', formData , {
           headers: {
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'application/json',
           }
         }) 
           .then((res) => {

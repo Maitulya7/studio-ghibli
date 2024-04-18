@@ -46,7 +46,7 @@ const RegisterPage = () => {
           formData.append('email', values.email);
   
           const response = await axios.post(
-              "http://localhost:5001/api/auth/register",
+              "http://localhost:5002/api/auth/register",
               formData,
               {
                   headers: {
