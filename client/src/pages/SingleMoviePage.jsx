@@ -2,27 +2,54 @@ import React, { useEffect, useState } from 'react';
 import { useApi } from '../ApiContext';
 import { useParams } from 'react-router-dom';
 import { Box, Typography, Card, CardMedia, CardContent, Chip, IconButton, Grid, Divider, CircularProgress } from '@mui/material';
-import { ArrowBack, Star } from '@mui/icons-material';
+import { ArrowBack, Star, StarBorder } from '@mui/icons-material';
 import rottenTomatoesLogo from '../assets/rotten_tomato.png';
+import axios from 'axios';
 
 const SingleMoviePage = () => {
+  const UserId = localStorage.getItem("UserId");
   const api = useApi();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [liked, setLiked] = useState(false);
   const { id } = useParams();
 
   useEffect(() => {
+    // Fetch movie details
     api.get(`/films/${id}`)
       .then((res) => {
-        setMovie(res.data)
-        setLoading(false)
-      }
-      )
+        setMovie(res.data);
+        setLoading(false);
+      })
       .catch((err) => {
-        console.log(err);
+        console.error("Error fetching movie:", err);
         setLoading(false);
       });
-  }, [api, id]);
+
+   
+  }, [api, id, UserId]);
+
+  const handleLike = async () => {
+    try {
+      if (liked) {
+        // Remove from favorites
+        await api.delete(`/api/users/${UserId}/favorite`, {
+          data: { movieId: id }
+        });
+        setLiked(false);
+      } else {
+        // Add to favorites
+        await axios.post(`http://localhost:5002/api/users/${UserId}/favorite`, {
+           movieId: id  , userId:UserId 
+        }).then((res)=>{
+          console.log(res)
+        });
+        setLiked(true);
+      }
+    } catch (err) {
+        console.error("Error handling like:", err);
+    }
+  };
 
   if (loading || !movie) {
     return (
@@ -102,15 +129,18 @@ const SingleMoviePage = () => {
                   <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
                     RT Score:
                   </Typography>
-                  <Box sx={{display:"flex" , gap:"5px" , alignItems:"center"}}>
-                  <Typography>{movie.rt_score}%</Typography>
-                  <img src={rottenTomatoesLogo} alt="Rotten Tomatoes" style={{ width: 25, height: 'auto' }} />
+                  <Box sx={{ display: "flex", gap: "5px", alignItems: "center" }}>
+                    <Typography>{movie.rt_score}%</Typography>
+                    <img src={rottenTomatoesLogo} alt="Rotten Tomatoes" style={{ width: 25, height: 'auto' }} />
                   </Box>
+                </Grid>
+                <Grid item xs={12}>
+                  <IconButton onClick={handleLike} color={liked ? "primary" : "default"}>
+                    {liked ? <Star /> : <StarBorder />}
+                  </IconButton>
                 </Grid>
               </Grid>
             </Grid>
-
-
           </Grid>
         </CardContent>
       </Card>

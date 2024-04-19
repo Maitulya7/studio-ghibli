@@ -4,6 +4,7 @@ import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
 import { ApiProvider } from "./ApiContext";
 import SingleMoviePage from "./pages/SingleMoviePage";
+import ProfilePage from "./pages/ProfilePage";
 function App() {
   return (
     <>
@@ -14,6 +15,7 @@ function App() {
           {/* home page  */}
           <Route path="/home" element={<HomePage />} />
           <Route path="/movie/:id" element={<SingleMoviePage />} />
+          <Route path="/profile" element={<ProfilePage/>}/>
         </Routes>
       </ApiProvider>
     </>

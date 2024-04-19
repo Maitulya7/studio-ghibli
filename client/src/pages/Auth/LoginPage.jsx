@@ -15,7 +15,6 @@ const LoginPage = () => {
       password: Yup.string().required('Password is required'),
     }),
     onSubmit: async (values) => {
-      console.log(values)
       const formData = new FormData();
       formData.append('email', values.email);
       formData.append('password', values.password);
@@ -27,7 +26,8 @@ const LoginPage = () => {
           }
         }) 
           .then((res) => {
-            console.log(res);
+            console.log(res.data.UserId);
+            localStorage.setItem("UserId" , res.data.UserId)
           })
           .catch((err) => {
             console.log(err);
