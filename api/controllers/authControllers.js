@@ -12,6 +12,7 @@ const userLogin = asyncHandler(async (req, res) => {
     }
 
     const user = await User.findOne({ email });
+    const UserId = user._id.toString()
 
     if (user && (await bcrypt.compare(password, user.password))) {
         const accessToken = jwt.sign({
@@ -21,13 +22,14 @@ const userLogin = asyncHandler(async (req, res) => {
             },
         }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
 
-        res.status(200).json({ email: user.email, accessToken, banner: user.banner, icon: user.icon });
+        res.status(200).json({ email: user.email, accessToken , UserId});
     } else {
         res.status(401).json({ error: "Invalid email or password" });
     }
 });
 
 const userRegister = asyncHandler(async (req, res) => {
+    
     const { username, password, email } = req.body;
 
     if (!username || !password || !email) {

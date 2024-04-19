@@ -17,6 +17,11 @@ const userSchema = mongoose.Schema({
         require:[true , "user password is require"]
     },
 
+    favorites: {
+        type: [String], // Array of strings for item identifiers
+        default: [], // Initialize with an empty array
+    },
+
 }) 
 
 
