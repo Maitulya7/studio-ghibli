@@ -18,8 +18,8 @@ const userSchema = mongoose.Schema({
     },
 
     favorites: {
-        type: [String], // Array of strings for item identifiers
-        default: [], // Initialize with an empty array
+        type: [String], 
+        default: [], 
     },
 
 }) 

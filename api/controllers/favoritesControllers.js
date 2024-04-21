@@ -2,15 +2,14 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
 
 const addFavorite = asyncHandler(async (req, res) => {
-    const { movieId} = req.body;
-    const {userId} = req.params
-    console.log(movieId)
-    const user = await User.findById({userId});
+    const { movieId , email} = req.body;
+    console.log("MovieId:", movieId)
+    console.log("User email", email)
+    const user = await User.findOne({email});
     if (!user) {
         res.status(404).json({ error: "User not found" });
         return;
     }
-    console.log(user)
 
     if (!user.favorites.includes(movieId)) {
         user.favorites.push(movieId);
