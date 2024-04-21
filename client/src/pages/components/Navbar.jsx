@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppBar, Toolbar, Typography, Button, IconButton, Menu, MenuItem, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-router-dom';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import { Link, useNavigate } from 'react-router-dom';
 
-const Navbar = ({ scrollToHero, scrollToMovie , scrollToGallery , scrollToAbout }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+const Navbar = ({ scrollToHero, scrollToMovie, scrollToGallery, scrollToAbout }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const email = localStorage.getItem('email');
+    setIsLoggedIn(Boolean(email));
+  }, []);
+
   const open = Boolean(anchorEl);
 
   const handleMenu = (event) => {
@@ -13,6 +22,13 @@ const Navbar = ({ scrollToHero, scrollToMovie , scrollToGallery , scrollToAbout 
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('email'); // Clear the email from local storag
+    localStorage.removeItem('UserId')
+    setIsLoggedIn(false); // Update the logged-in state
+    navigate('/login'); // Redirect to the home page after logout
   };
 
   return (
@@ -32,14 +48,28 @@ const Navbar = ({ scrollToHero, scrollToMovie , scrollToGallery , scrollToAbout 
             About Us
           </Button>
           <Button onClick={scrollToGallery} color="inherit" variant="text">
-          Gallery
+            Gallery
           </Button>
-          <Button component={Link} to="/login" color="primary" variant="contained">
-            Login
-          </Button>
-          <Button component={Link} to="/register" color="primary" variant="contained">
-            Register
-          </Button>
+
+          {isLoggedIn ? (
+            <>
+              <IconButton component={Link} to="/profile" color="inherit">
+                <AccountCircle fontSize='medium' />
+              </IconButton>
+              <Button onClick={handleLogout} color="error" variant="contained">
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button component={Link} to="/login" color="primary" variant="contained">
+                Login
+              </Button>
+              <Button component={Link} to="/register" color="primary" variant="contained">
+                Register
+              </Button>
+            </>
+          )}
         </div>
         <div className="md:hidden">
           <IconButton
@@ -71,12 +101,26 @@ const Navbar = ({ scrollToHero, scrollToMovie , scrollToGallery , scrollToAbout 
             <MenuItem onClick={handleClose}>Movies</MenuItem>
             <MenuItem onClick={handleClose}>About Us</MenuItem>
             <MenuItem onClick={handleClose}>Gallery</MenuItem>
-            <MenuItem component={Link} to="/login" onClick={handleClose}>
-              Login
-            </MenuItem>
-            <MenuItem component={Link} to="/register" onClick={handleClose}>
-              Register
-            </MenuItem>
+
+            {isLoggedIn ? (
+              <>
+                <MenuItem component={Link} to="/profile" onClick={handleClose}>
+                  Profile
+                </MenuItem>
+                <MenuItem  onClick={() => { handleClose(); handleLogout(); }}>
+                  Logout
+                </MenuItem>
+              </>
+            ) : (
+              <>
+                <MenuItem component={Link} to="/login" onClick={handleClose}>
+                  Login
+                </MenuItem>
+                <MenuItem component={Link} to="/register" onClick={handleClose}>
+                  Register
+                </MenuItem>
+              </>
+            )}
           </Menu>
         </div>
       </Toolbar>

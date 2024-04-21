@@ -2,9 +2,12 @@ import React from 'react';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Box, TextField, Button, Typography, Container, Grid, Paper } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import {TextField, Button, Typography, Container, Grid, Paper } from '@mui/material';
 
 const LoginPage = () => {
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -18,9 +21,9 @@ const LoginPage = () => {
       const formData = new FormData();
       formData.append('email', values.email);
       formData.append('password', values.password);
-
+    
       try {
-        axios.post('http://localhost:5002/api/auth/login', formData , {
+        axios.post('http://localhost:5001/api/auth/login', formData , {
           headers: {
             'Content-Type': 'application/json',
           }
@@ -28,6 +31,10 @@ const LoginPage = () => {
           .then((res) => {
             console.log(res.data.UserId);
             localStorage.setItem("UserId" , res.data.UserId)
+            localStorage.setItem("email" , res.data.email)
+            toast.success("Successfully Login!")
+            navigate("/home")
+
           })
           .catch((err) => {
             console.log(err);

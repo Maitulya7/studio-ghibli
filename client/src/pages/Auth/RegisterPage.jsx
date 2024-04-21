@@ -1,29 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   Grid,
   TextField,
   Button,
   Typography,
   Box,
-  Avatar,
-  IconButton,
-  Input,
 } from '@mui/material';
-import {
-  PhotoCamera,
-  Person as PersonIcon,
-  CloudUpload as CloudUploadIcon,
-} from '@mui/icons-material';
 import registerAnimation from "../../assets/todoro-miyazaki.gif"
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from "axios"
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 const RegisterPage = () => {
 
-
-
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -46,16 +39,21 @@ const RegisterPage = () => {
           formData.append('email', values.email);
   
           const response = await axios.post(
-              "http://localhost:5002/api/auth/register",
+              "http://localhost:5001/api/auth/register",
               formData,
               {
                   headers: {
                     'Content-Type': 'application/json',
                   }
               }
-          );
+          ).then((res)=>{
+            console.log(res);
+            toast.success("Successfully Register!")
+            navigate('/login')
+          }).catch((err)=>{
+            console.log(err)
+          });
   
-          console.log(response);
       } catch (error) {
           console.log(error.message);
       }

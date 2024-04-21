@@ -5,9 +5,11 @@ import { Box, Typography, Card, CardMedia, CardContent, Chip, IconButton, Grid, 
 import { ArrowBack, Star, StarBorder } from '@mui/icons-material';
 import rottenTomatoesLogo from '../assets/rotten_tomato.png';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const SingleMoviePage = () => {
-  const UserId = localStorage.getItem("UserId");
+  let UserId = localStorage.getItem("UserId");
+  let email = localStorage.getItem("email")
   const api = useApi();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -39,12 +41,15 @@ const SingleMoviePage = () => {
         setLiked(false);
       } else {
         // Add to favorites
-        await axios.post(`http://localhost:5002/api/users/${UserId}/favorite`, {
-           movieId: id  , userId:UserId 
+        await axios.post(`http://localhost:5001/api/users/${UserId}/favorite`, {
+           movieId: id  , email:email 
         }).then((res)=>{
           console.log(res)
+          setLiked(true);
+        }).catch((err)=>{
+          console.log(err)
+          toast.error("Login or Register to perform this action!")
         });
-        setLiked(true);
       }
     } catch (err) {
         console.error("Error handling like:", err);

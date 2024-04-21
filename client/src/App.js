@@ -5,6 +5,9 @@ import RegisterPage from "./pages/Auth/RegisterPage";
 import { ApiProvider } from "./ApiContext";
 import SingleMoviePage from "./pages/SingleMoviePage";
 import ProfilePage from "./pages/ProfilePage";
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function App() {
   return (
     <>
@@ -18,6 +21,7 @@ function App() {
           <Route path="/profile" element={<ProfilePage/>}/>
         </Routes>
       </ApiProvider>
+      <ToastContainer/>
     </>
   );
 }
